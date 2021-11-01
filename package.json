@@ -4,5 +4,13 @@
   "main": "index.js",
   "repository": "git@github.com:marcospiemontez/api_teste.git",
   "author": "Marcos Piemontez <marcos.piemontez1@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/app.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.7.1",
+    "sequelize": "^6.9.0"
+  }
 }
