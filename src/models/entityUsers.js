@@ -18,7 +18,7 @@ const users = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: false
         },
-        passoword: {
+        password: {
             type: DataTypes.STRING,
             allowNull: false
         },
