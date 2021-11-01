@@ -1,0 +1,8 @@
+{
+  "name": "api_teste",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:marcospiemontez/api_teste.git",
+  "author": "Marcos Piemontez <marcos.piemontez1@gmail.com>",
+  "license": "MIT"
+}
