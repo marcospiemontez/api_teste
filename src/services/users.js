@@ -3,7 +3,21 @@ class UserService {
         this.user = UserModel
     }
 
-    async get() {
+    async getById(idDTO) {
+        const validateUserByID = await this.user.findOne({
+            where: {
+                id: idDTO
+            }
+        })
+
+        if (validateUserByID === null) {
+            throw new Error('User not found!')
+        } else {
+            return validateUserByID
+        }
+    }
+
+    async getAll() {
         const listUsers = await this.user.findAll()
         return listUsers
     }
@@ -36,8 +50,89 @@ class UserService {
             throw error.message 
         }
     }
+
+    async update(idDTO, userDTO) {
+        const validationUserUpdate = await this.user.findOne({
+            where: {
+                id: idDTO
+            }
+        })
+
+        if (validationUserUpdate === null) {
+            throw new Error('User not found!')
+        }
+
+        try {
+            await this.user.update(
+                {
+                    ...userDTO
+                },
+                {
+                    where: {
+                        id: idDTO
+                    }
+                }
+            )
+        } catch (error) {
+            throw error.message
+        }
+    }
+
+    async updateMerge(idDTO, userDTO) {
+        const validateUserUpdateMerge = await this.user.findOne({
+            where: {
+                id :idDTO
+            }
+        })
+
+        if (validateUserUpdateMerge === null) {
+            throw new Error('User not found!')
+        }
+
+        const dataMerge = {
+            ...validateUserUpdateMerge.dataValues,
+            ...userDTO
+        }
+
+        try {
+            await this.user.update(
+                {
+                    ...dataMerge
+                },
+                {
+                    where: {
+                        id: idDTO
+                    }
+                }
+            )
+        } catch (error) {
+            throw error.message
+        }
+    }
+
+    async delete(idDTO) {
+        const validateUserDelete = await this.user.findOne({
+            where: {
+                id: idDTO
+            }
+        })
+
+        if (validateUserDelete === null) {
+            throw new Error('User not found!')
+        }
+
+        try {
+            await this.user.destroy(
+                {
+                    where: {
+                        id: idDTO
+                    }
+                }
+            )
+        } catch (error) {
+            throw error.message
+        }
+    }
 }
 
 module.exports = UserService
-
-// throw interrompe a requisição
