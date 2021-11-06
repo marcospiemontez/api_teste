@@ -15,7 +15,7 @@ class ProductService {
             }
         })
 
-        if(validationProduct != null) {
+        if(validationProduct !== null) {
             throw new Error('There is already a product with this name registered')
         }
 

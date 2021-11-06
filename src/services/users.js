@@ -10,14 +10,24 @@ class UserService {
     // DTO = objeto de transferência
     async add(userDTO) {
         // procura o cpf
-        const validationUser = await this.user.findOne({
+        const validationUserCpf = await this.user.findOne({
             where: {
                 cpf: userDTO.cpf
             }
         })
         // se encontrar um cpf existente pare!
-        if (validationUser != null) {
+        if (validationUserCpf !== null) {
             throw new Error('The informative CPF is already being used!')
+        }
+
+        const validationUserEmail = await this.user.findOne({
+            where: {
+                email: userDTO.email
+            }
+        })
+
+        if (validationUserEmail !== null) {
+            throw new Error('The informative email is already being used!')
         }
         // se passar crie um novo
         try {
