@@ -9,7 +9,6 @@ const app = express()
 app.use(express.json())
 app.use('/', routers)
 
-
 configSequelize.sync().then(() => {
     console.log('Database Connected')
 })

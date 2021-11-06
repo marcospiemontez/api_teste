@@ -17,6 +17,20 @@ class AuthenticatedService {
             return validationUser
         }
     }
+
+    async forgotPass(userDTO) {
+        const validationUserForgot = await this.user.findOne({
+            where: {
+                email: userDTO.email,
+            }
+        })
+    
+        if (validationUserForgot === null) {
+            throw new Error('The email entered does not belong to a valid user!')
+        } else {
+            return validationUserForgot
+        }
+    }
 }
 
 module.exports = AuthenticatedService
