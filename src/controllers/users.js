@@ -156,4 +156,27 @@ router.delete('/deleteUser/:id', async (req, res) =>{
         })
     }
 })
+
+router.post('/changePassword',
+    check('password').not().isEmpty().isLength({ min: 6 }).withMessage('The password entered must have more than 6 characters'),
+    
+    async (req, res) => {
+        const idUser = req.idUser.id
+        
+        const dataUser = { ...req.body }
+
+        try {
+            await userService.updateMerge(idUser, dataUser)
+            res.status(200).send({
+                status: 200,
+                message: 'Password changed successfully'
+            })
+        } catch (error) {
+            res.status(400).send({
+                status: 400,
+                message: error.message
+            })    
+        }
+})
+
 module.exports = router
