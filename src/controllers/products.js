@@ -2,8 +2,10 @@ const express = require('express')
 const { products } = require('../models/index')
 const ProductService = require('../services/products')
 const { body, check, validationResult } = require('express-validator')
+const middleware = require('../middlewares/authenticatedVerification')
 
 const router = express.Router()
+router.use(middleware)
 
 const productService = new ProductService(products)
 

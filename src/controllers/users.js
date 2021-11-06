@@ -1,8 +1,11 @@
 const express = require('express')
 const { users } = require('../models/index')
 const UserService = require('../services/users')
-const router = express.Router()
 const { body, check, validationResult } = require('express-validator')
+const middleware = require('../middlewares/authenticatedVerification')
+
+const router = express.Router()
+router.use(middleware)
 
 const userService = new UserService(users)
 
