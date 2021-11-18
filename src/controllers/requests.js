@@ -33,7 +33,12 @@ router.get('/list', async(req, res) => {
 })
 
 router.post('/',
-    check('userId').not().isEmpty().isNumeric().withMessage('The data submitted must be a valid number for ID.'),
+    check('userId').not().isEmpty().isNumeric().withMessage('The data submitted must be a valid number for ID of user.'),
+    check('amount').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number for amount.'),
+    check('amountProduct').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number for amount of product.'),
+    check('amountDiscount').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number for amount of discount.'),
+    // check('paymentId').not().isEmpty().isNumeric().withMessage('The data submitted must be a valid number for ID of payment method.'),
+    check('products').not().isEmpty().isArray().withMessage('The data sent is not valid for the expected array in the products field.'),
 
     async (req, res) => {
         const errors = validationResult(req)
@@ -47,6 +52,11 @@ router.post('/',
         const dataRequests = {
             note: req.body.note,
             userId: req.body.userId,
+            amount: req.body.amount,
+            amountProduct: req.body.amountProduct,
+            amountDiscount: req.body.amountDiscount,
+            // paymentId: req.body.paymentId,
+            products: req.body.products,
         }
 
         try {
