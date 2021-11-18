@@ -1,4 +1,5 @@
 const Users = require("../models/entityUsers")
+const Payments = require("../models/entityPayments")
 
 class RequestService {
     constructor(RequestsModel) {
@@ -7,10 +8,16 @@ class RequestService {
 
     async getById (idDTO) {
         const validationRequestById = await this.request.findOne({
-            include: {
-                model: Users,
-                as: 'userData'
-            },
+            include: [
+                {
+                    model: Users,
+                    as: 'userData'
+                },
+                {
+                    model: Payments,
+                    as: 'paymentData'
+                },
+            ],
             where: {
                 id: idDTO
             }
@@ -25,29 +32,45 @@ class RequestService {
 
     async getAll() {
         const listRequests = await this.request.findAll({
-            include: {
-                model: Users,
-                as: 'userData'
-            },
+            include: [
+                {
+                    model: Users,
+                    as: 'userData'
+                },
+                {
+                    model: Payments,
+                    as: 'paymentData'
+                },
+            ]
         })
         return listRequests
     }
 
     async add(requestDTO) {
-        const validationRequest = await Users.findOne({
+        const validationRequestUser = await Users.findOne({
             where: {
                 id: requestDTO.userId
             }
         })
 
-        if(validationRequest === null) {
+        if(validationRequestUser === null) {
             throw new Error('The ID entered does not belong to a valid user!')
+        }
+
+        const validationRequestPayment = await Payments.findOne({
+            where: {
+                id: requestDTO.paymentId
+            }
+        })
+
+        if(validationRequestPayment === null) {
+            throw new Error('The ID entered does not belong to a valid payment method!')
         }
 
         try {
             await this.request.create(requestDTO)
         } catch (error) {
-            throw error.message
+            throw error
         }
     }
 

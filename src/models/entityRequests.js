@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const Users = require('./entityUsers')
-const Products = require('./entityProducts')
+const Payments = require('./entityPayments')
 const configSequelize = require('../config/sequelize')
 
 const Requests = configSequelize.define('EntityRequests', {
@@ -32,20 +32,20 @@ const Requests = configSequelize.define('EntityRequests', {
         type: Sequelize.FLOAT,
         allowNull: false,
     },
-    // payment: {
-    //     type: Sequelize.INTEGER,
-    //     allowNull: false,
-    //     reference: {
-    //         model: 'Payments',
-    //         key: 'id'
-    //     }
-    // },
+    paymentId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        reference: {
+            model: 'Payments',
+            key: 'id'
+        }
+    },
     products: {
         type: Sequelize.ARRAY(Sequelize.JSON),
         allowNull: false,
     },
 }, {
-    tableName: 'entityRequests'
+    tableName: 'entityrequests'
 })
 
 Requests.belongsTo(Users, { 
@@ -57,6 +57,18 @@ Requests.belongsTo(Users, {
 Users.hasMany(Requests, { 
     constraint: true,
     foreignKey: 'userId',
+    as: 'userDataRequests'
 })
 
+Requests.belongsTo(Payments, { 
+    constraint: true,
+    foreignKey: 'paymentId',
+    as: 'paymentData'
+})
+
+Payments.hasMany(Requests, { 
+    constraint: true,
+    foreignKey: 'paymentId',
+    as: 'paymentDataRequests'
+})
 module.exports = Requests
