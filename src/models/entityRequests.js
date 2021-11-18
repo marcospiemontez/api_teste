@@ -13,7 +13,11 @@ const Requests = configSequelize.define('EntityRequests', {
     },
     userId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        Reference: {
+            model: 'Users',
+            key: 'id'
+        }
     },
 }, {
     tableName: 'entityRequests'
