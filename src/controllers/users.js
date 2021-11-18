@@ -1,5 +1,5 @@
 const express = require('express')
-const { users } = require('../models/index')
+const { Users } = require('../models/index')
 const UserService = require('../services/users')
 const { body, check, validationResult } = require('express-validator')
 const middleware = require('../middlewares/authenticatedVerification')
@@ -7,9 +7,9 @@ const middleware = require('../middlewares/authenticatedVerification')
 const router = express.Router()
 router.use(middleware)
 
-const userService = new UserService(users)
+const userService = new UserService(Users)
 
-router.get('/listUser/:id', async (req, res) => {
+router.get('/:id/details', async (req, res) => {
     const idUser = req.params.id
 
     try {
@@ -28,12 +28,12 @@ router.get('/listUser/:id', async (req, res) => {
     }
 })
 
-router.get('/listUsers', async (req, res) => {
+router.get('/list', async (req, res) => {
     const listUsers = await userService.getAll()
     res.status(200).json(listUsers)
 })
 
-router.post('/cadUsers',
+router.post('/',
     body('name').not().isEmpty().withMessage('The data sent connot be empty or null').trim().escape(),
     check('cpf').not().isEmpty().isNumeric().withMessage('The data sent must be valid numbers'),
     check('birthDate').not().isEmpty().isISO8601().toDate().withMessage('The date entered is not within the established pattern'),
@@ -73,7 +73,7 @@ router.post('/cadUsers',
     }
 )
 
-router.put('/updateUser/:id',
+router.put('/:id',
     body('name').not().isEmpty().withMessage('The data sent cannot be empty or null').trim().escape(),
     check('cpf').not().isEmpty().isNumeric().withMessage('The data sent must be valid numbers'),
     check('birthDate').not().isEmpty().isISO8601().toDate().withMessage('The date entered is not within the established pattern'),
@@ -111,7 +111,7 @@ router.put('/updateUser/:id',
     }
 )
 
-router.patch('/updateUserMerge/:id', 
+router.patch('/:id', 
     body('name').not().isEmpty().withMessage('The data sent cannot be empty or null').trim().escape(),
     check('cpf').not().isEmpty().isNumeric().withMessage('The data sent must be valid numbers'),
     check('birthDate').not().isEmpty().isISO8601().toDate().withMessage('The date entered is not within the established pattern'),
@@ -143,7 +143,7 @@ router.patch('/updateUserMerge/:id',
     }
 )
 
-router.delete('/deleteUser/:id', async (req, res) =>{
+router.delete('/:id', async (req, res) =>{
     const idUser = req.params.id
 
     try {
@@ -157,7 +157,7 @@ router.delete('/deleteUser/:id', async (req, res) =>{
     }
 })
 
-router.post('/changePassword',
+router.post('/change/password',
     check('password').not().isEmpty().isLength({ min: 6 }).withMessage('The password entered must have more than 6 characters'),
     
     async (req, res) => {

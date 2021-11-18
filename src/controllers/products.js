@@ -1,5 +1,5 @@
 const express = require('express')
-const { products } = require('../models/index')
+const { Products } = require('../models/index')
 const ProductService = require('../services/products')
 const { body, check, validationResult } = require('express-validator')
 const middleware = require('../middlewares/authenticatedVerification')
@@ -7,9 +7,9 @@ const middleware = require('../middlewares/authenticatedVerification')
 const router = express.Router()
 router.use(middleware)
 
-const productService = new ProductService(products)
+const productService = new ProductService(Products)
 
-router.get('/listProduct/:id', async (req, res) => {
+router.get('/:id/details', async (req, res) => {
     const idProduct = req.params.id
 
     try {
@@ -27,12 +27,12 @@ router.get('/listProduct/:id', async (req, res) => {
     }
 })
 
-router.get('/listProducts', async(req, res) => {
+router.get('/list', async(req, res) => {
     const listProducts = await productService.getAll()
     res.status(200).json(listProducts)
 })
 
-router.post('/cadProducts',
+router.post('/',
     body('name').not().isEmpty().withMessage('The data sent cannot be empty or null').trim().escape(),
     check('price').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number. Example (10.99)'),
 
@@ -66,7 +66,7 @@ router.post('/cadProducts',
     }
 )
 
-router.put('/updateProduct/:id',
+router.put('/:id',
     body('name').not().isEmpty().withMessage('The data sent cannot be empty or null').trim().escape(),
     check('price').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number. Example (10.99)'),
     
@@ -99,7 +99,7 @@ router.put('/updateProduct/:id',
     }
 )
 
-router.patch('/updateProductMerge/:id', 
+router.patch('/:id', 
     body('name').not().isEmpty().withMessage('The data sent cannot be empty or null').trim().escape(),
     check('price').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number. Example (10.99)'),
     
@@ -128,7 +128,7 @@ router.patch('/updateProductMerge/:id',
     }
 )
 
-router.delete('/deleteProduct/:id', async (req, res) =>{
+router.delete('/:id', async (req, res) =>{
     const idProduct = req.params.id
 
     try {

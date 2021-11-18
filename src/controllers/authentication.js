@@ -1,5 +1,5 @@
 const express = require('express')
-const { users } = require('../models/index')    // usando o user que foi centralizado no index
+const { Users } = require('../models/index')    // usando o user que foi centralizado no index
 const AuthenticatedService = require('../services/authentication')   //classe é sempre maiúsculo
 const { check, validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
@@ -7,7 +7,7 @@ const keyToken = require('../config/keyToken.json')
 const mailer = require('../util/mailer')
 
 const router = express.Router()
-const authenticatedService = new AuthenticatedService(users)
+const authenticatedService = new AuthenticatedService(Users)
 
 function generateToken(id = {}){
     return jwt.sign(

@@ -1,16 +1,14 @@
-const Sequelize = require('sequelize')
 const configSequelize = require('../config/sequelize')
 
 const Users = require('./entityUsers') //importação
 const Products = require('./entityProducts.js')
-
-const users =  Users(configSequelize, Sequelize.DataTypes)
-const products = Products(configSequelize, Sequelize.DataTypes)
+const Requests = require('./entityRequests')
 
 const db = {
-    users: users,                       // estou puxando os dados do users acima
-    products: products,                 // estou puxando os dados do products acima
-    configSequelize: configSequelize    // estou puxando os dados do configSequelize acima
+    Users,                    // estou puxando os dados do users acima
+    Products,                 // estou puxando os dados do products acima
+    Requests,                 // estou puxando os dados do requests acima
+    configSequelize           // estou puxando os dados do configSequelize acima
 }
 
 module.exports = db
