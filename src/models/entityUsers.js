@@ -50,7 +50,7 @@ Users.belongsTo(TypeAccess, {
 TypeAccess.hasMany(Users, { 
     constraint: true,
     foreignKey: 'typeAccessId',
-    as: 'typesDataUsers'
+    as: 'typesDataUser'
 })
 
 module.exports = Users
