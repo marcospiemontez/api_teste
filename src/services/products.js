@@ -118,9 +118,9 @@ class ProductService {
                     }
                 }
             )
-        } catch (error) {
-            throw error
-        }
+            } catch (error) {
+                throw error
+            }
     }
 }
 

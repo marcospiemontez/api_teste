@@ -1,3 +1,4 @@
+const TypeAccess = require('../models/entityTypeAccess')
 class UserService {
     constructor(UserModel) {
         this.user = UserModel
@@ -5,6 +6,10 @@ class UserService {
 
     async getById(idDTO) {
         const validateUserByID = await this.user.findOne({
+            include: {
+                model: TypeAccess,
+                as: 'typeAccessData'
+            },
             where: {
                 id: idDTO
             }
@@ -18,7 +23,12 @@ class UserService {
     }
 
     async getAll() {
-        const listUsers = await this.user.findAll()
+        const listUsers = await this.user.findAll({
+            include: {
+                model: TypeAccess,
+                as: 'typeAccessData'
+            }
+        })
         return listUsers
     }
     // DTO = objeto de transferência

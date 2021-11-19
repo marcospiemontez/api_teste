@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const configSequelize = require('../config/sequelize')
+const TypeAccess = require('./entityTypeAccess')
 
 const Users = configSequelize.define('EntityUsers', {
     id: {
@@ -27,9 +28,29 @@ const Users = configSequelize.define('EntityUsers', {
     email: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    typeAccessId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        reference: {
+            model: 'TypeAccess',
+            key: 'id'
+        }
     } 
 }, {
     tableName: 'entityusers'
+})
+
+Users.belongsTo(TypeAccess, { 
+    constraint: true,
+    foreignKey: 'typeAccessId',
+    as: 'typeAccessData'
+})
+
+TypeAccess.hasMany(Users, { 
+    constraint: true,
+    foreignKey: 'typeAccessId',
+    as: 'typesDataUser'
 })
 
 module.exports = Users
