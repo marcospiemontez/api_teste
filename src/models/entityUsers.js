@@ -36,7 +36,7 @@ const Users = configSequelize.define('EntityUsers', {
             model: 'TypeAccess',
             key: 'id'
         }
-    } 
+    }, 
 }, {
     tableName: 'entityusers'
 })

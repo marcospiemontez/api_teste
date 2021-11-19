@@ -53,6 +53,16 @@ class UserService {
         if (validationUserEmail !== null) {
             throw new Error('The informative email is already being used!')
         }
+
+        const validationUserTypeAccess = await TypeAccess.findOne({
+            where: {
+                id: userDTO.typeAccessId
+            }
+        })
+
+        if (validationUserTypeAccess === null) {
+            throw new Error('The ID informed for the type access is not valid!')
+        }
         // se passar crie um novo
         try {
             await this.user.create(userDTO)
