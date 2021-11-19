@@ -47,7 +47,7 @@ class UserService {
         try {
             await this.user.create(userDTO)
         } catch (error) {
-            throw error.message 
+            throw error 
         }
     }
 
@@ -74,7 +74,7 @@ class UserService {
                 }
             )
         } catch (error) {
-            throw error.message
+            throw error
         }
     }
 
@@ -106,7 +106,7 @@ class UserService {
                 }
             )
         } catch (error) {
-            throw error.message
+            throw error
         }
     }
 
@@ -129,8 +129,14 @@ class UserService {
                     }
                 }
             )
-        } catch (error) {
-            throw error.message
+        }   catch (error) {
+            if (error instanceof Sequelize.ForeignKeyConstraintError) {
+                error.message = 'It is not possible to delete the user as it is linked to another table!'
+                throw error
+                // if (error.index.includes("entityrequests_paymentId_fkey")) {}
+            } else {
+                throw error
+            }
         }
     }
 }

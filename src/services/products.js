@@ -36,7 +36,7 @@ class ProductService {
         try {
             await this.product.create(productDTO)
         } catch (error) {
-            throw error.message
+            throw error
         }
     }
 
@@ -63,7 +63,7 @@ class ProductService {
                 }
             )
         } catch (error) {
-            throw error.message
+            throw error
         }
     }
 
@@ -95,7 +95,7 @@ class ProductService {
                 }
             )
         } catch (error) {
-            throw error.message
+            throw error
         }
     }
 
@@ -119,7 +119,7 @@ class ProductService {
                 }
             )
         } catch (error) {
-            throw error.message
+            throw error
         }
     }
 }

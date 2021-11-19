@@ -91,6 +91,11 @@ router.put('/:id',
         const dataRequest = {
             note: req.body.note,
             userId: req.body.userId,
+            amount: req.body.amount,
+            amountProduct: req.body.amountProduct,
+            amountDiscount: req.body.amountDiscount,
+            paymentId: req.body.paymentId,
+            products: req.body.products,
         }
 
         try {

@@ -97,7 +97,7 @@ class RequestService {
                 }
             )
         } catch (error) {
-            throw error.message
+            throw error
         }
     }
 
@@ -129,7 +129,7 @@ class RequestService {
                 }
             )
         } catch (error) {
-            throw error.message
+            throw error
         }
     }
 
@@ -153,7 +153,7 @@ class RequestService {
                 }
             )
         } catch (error) {
-            throw error.message
+            throw error
         }
     }
 }
