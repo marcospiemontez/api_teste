@@ -40,7 +40,6 @@ router.post('/',
             })
         }
 
-        console.log(req.idUser.id)
         const dataCarts = {
             productId: req.body.productId,
             quantity: req.body.quantity,
@@ -63,79 +62,48 @@ router.post('/',
     }
 )
 
-// router.put('/:id',
-//     check('productId').not().isEmpty().isNumeric().withMessage('The data sent is not valid numbers for an ID!'),
+router.patch('/:id', 
+    body('name').not().isEmpty().withMessage('The data sent cannot be empty or null').trim().escape(),
+    check('price').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number. Example (10.99)'),
     
-//     async (req, res) => {
-//         const errors = validationResult(req)
+    async (req, res) => {
+        const errors = validationResult(req)
 
-//         if (!errors.isEmpty()) {
-//             return res.status(400).json({
-//                 errors: errors.array()
-//             })
-//         }
+        if(!errors.isEmpty()) {
+            return res.status(400).json({
+                errors: errors.array()
+            })
+        }
 
-//         const idProduct = req.params.id
+        const idProduct = req.params.id
 
-//         const dataProduct = {
-//             name: req.body.name,
-//             price: req.body.price,
-//             description: req.body.description
-//         }
+        const dataProduct = {...req.body}
 
-//         try {
-//             await cartService.update(idProduct, dataProduct)
-//             res.status(204).send()
-//         } catch (error) {
-//             res.status(404).send({
-//                 status: 404,
-//                 message: error.message
-//             })
-//         }
-//     }
-// )
+        try {
+            await cartService.updateMerge(idProduct, dataProduct)
+            res.status(204).send()
+        } catch (error) {
+            res.status(404).send({
+                status: 404,
+                message: error.message
+            })
+        }
+    }
+)
 
-// router.patch('/:id', 
-//     body('name').not().isEmpty().withMessage('The data sent cannot be empty or null').trim().escape(),
-//     check('price').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number. Example (10.99)'),
-    
-//     async (req, res) => {
-//         const errors = validationResult(req)
+router.delete('/:id', async (req, res) =>{
+    const idUserCart = req.idUser.id
+    const idProductCart = req.params.id
 
-//         if(!errors.isEmpty()) {
-//             return res.status(400).json({
-//                 errors: errors.array()
-//             })
-//         }
-
-//         const idProduct = req.params.id
-
-//         const dataProduct = {...req.body}
-
-//         try {
-//             await cartService.updateMerge(idProduct, dataProduct)
-//             res.status(204).send()
-//         } catch (error) {
-//             res.status(404).send({
-//                 status: 404,
-//                 message: error.message
-//             })
-//         }
-//     }
-// )
-
-// router.delete('/:id', async (req, res) =>{
-//     const idProduct = req.params.id
-
-//     try {
-//         await cartService.delete(idProduct)
-//         res.status(204).send()
-//     } catch (error) {
-//         res.status(404).send({
-//             status: 404,
-//             message: error.message
-//         })
-//     }
-// })
+    try {
+        await cartService.delete(idUserCart, idProductCart)
+        res.status(204).send()
+    } catch (error) {
+        res.status(404).send({
+            status: 404,
+            message: error.message
+        })
+    }
+})
 
 module.exports = router

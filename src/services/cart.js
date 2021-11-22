@@ -75,88 +75,65 @@ class CartService {
         }
     }
 
-    // async update(idDTO, cartDTO) {
-    //     const validationcartUpdate = await this.cart.findOne({
-    //         where: {
-    //             id: idDTO
-    //         }
-    //     })
+    async updateMerge(idDTO, cartDTO) {
+        const validatecartUpdateMerge = await this.cart.findOne({
+            where: {
+                id :idDTO
+            }
+        })
 
-    //     if (validationcartUpdate === null) {
-    //         throw new Error('cart not found!')
-    //     }
+        if (validatecartUpdateMerge === null) {
+            throw new Error('cart not found!')
+        }
 
-    //     try {
-    //         await this.cart.update(
-    //             {
-    //                 ...cartDTO
-    //             },
-    //             {
-    //                 where: {
-    //                     id: idDTO
-    //                 }
-    //             }
-    //         )
-    //     } catch (error) {
-    //         throw error
-    //     }
-    // }
+        const dataMerge = {
+            ...validatecartUpdateMerge.dataValues,
+            ...cartDTO
+        }
 
-    // async updateMerge(idDTO, cartDTO) {
-    //     const validatecartUpdateMerge = await this.cart.findOne({
-    //         where: {
-    //             id :idDTO
-    //         }
-    //     })
+        try {
+            await this.cart.update(
+                {
+                    ...dataMerge
+                },
+                {
+                    where: {
+                        id: idDTO
+                    }
+                }
+            )
+        } catch (error) {
+            throw error
+        }
+    }
 
-    //     if (validatecartUpdateMerge === null) {
-    //         throw new Error('cart not found!')
-    //     }
+    async delete(idUserCartDTO, idProductCartDTO) {
+        const validateCartDelete = await this.cart.findOne({
+            where: {
+                userId: idUserCartDTO,
+                productId: idProductCartDTO
+            }
+        })
 
-    //     const dataMerge = {
-    //         ...validatecartUpdateMerge.dataValues,
-    //         ...cartDTO
-    //     }
+        if (validateCartDelete === null) {
+            throw new Error('Product not found!')
+        } else {
+            var idCart = validateCartDelete.dataValues.id 
+        }
 
-    //     try {
-    //         await this.cart.update(
-    //             {
-    //                 ...dataMerge
-    //             },
-    //             {
-    //                 where: {
-    //                     id: idDTO
-    //                 }
-    //             }
-    //         )
-    //     } catch (error) {
-    //         throw error
-    //     }
-    // }
 
-    // async delete(idDTO) {
-    //     const validatecartDelete = await this.cart.findOne({
-    //         where: {
-    //             id: idDTO
-    //         }
-    //     })
-
-    //     if (validatecartDelete === null) {
-    //         throw new Error('cart not found!')
-    //     }
-
-    //     try {
-    //         await this.cart.destroy(
-    //             {
-    //                 where: {
-    //                     id: idDTO
-    //                 }
-    //             }
-    //         )
-    //         } catch (error) {
-    //             throw error
-    //         }
-    // }
+        try {
+            await this.cart.destroy(
+                {
+                    where: {
+                        id: idCart
+                    }
+                }
+            )
+            } catch (error) {
+                throw error
+            }
+    }
 }
 
 module.exports = CartService
