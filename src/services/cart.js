@@ -68,11 +68,45 @@ class CartService {
             throw new Error('The sent ID does not correspond to a valid product!')
         }
 
-        try {
-            await this.cart.create(cartDTO)
-        } catch (error) {
-            throw error
+        const validationQuantityProductCart = await this.cart.findOne({
+            where: {
+                userId: cartDTO.userId,
+                productId: cartDTO.productId
+            }
+        })
+
+        if(validationQuantityProductCart === null) {
+            try {
+                await this.cart.create(cartDTO)
+            } catch (error) {
+                throw error
+            }
+        } else {
+            const idCart = validationQuantityProductCart.dataValues.id
+            const lastQuantity = validationQuantityProductCart.dataValues.quantity
+            const newQuantity = lastQuantity + cartDTO.quantity
+
+            const dataMerge = {
+                ...validationQuantityProductCart.dataValues,
+                quantity: newQuantity
+            }
+
+            try {
+                await this.cart.update(
+                    {
+                        ...dataMerge
+                    },
+                    {
+                        where: {
+                            id: idCart
+                        }
+                    }
+                )
+            } catch (error) {
+                throw error
+            }
         }
+
     }
 
     async updateMerge(idUserCartDTO, idProductCartDTO, cartDTO) {
@@ -82,16 +116,18 @@ class CartService {
                 productId: idProductCartDTO
             }
         })
-        console.log(idUserCartDTO)
+
         if (validateCartUpdateMerge === null) {
             throw new Error('Product not found!')
         } else {
             var idCart = validateCartUpdateMerge.dataValues.id
+            const lastQuantity = validateCartUpdateMerge.dataValues.quantity
+            var newQuantity = lastQuantity + cartDTO.quantity
         }
 
         const dataMerge = {
             ...validateCartUpdateMerge.dataValues,
-            ...cartDTO
+            quantity: newQuantity
         }
 
         try {
@@ -109,7 +145,7 @@ class CartService {
             throw error
         }
     }
-
+    
     async delete(idUserCartDTO, idProductCartDTO) {
         const validateCartDelete = await this.cart.findOne({
             where: {
