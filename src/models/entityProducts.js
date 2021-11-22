@@ -18,6 +18,10 @@ const Products = configSequelize.define('EntityProducts', {
     price: {
         type: Sequelize.FLOAT,
         allowNull: false
+    },
+    inventory: {
+        type: Sequelize.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'entityproducts'

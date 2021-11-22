@@ -48,16 +48,6 @@ class CartService {
     }
 
     async add(cartDTO) {
-        const validationCart = await Products.findOne({
-            where: {
-                id: cartDTO.productId
-            }
-        })
-
-        if(validationCart === null) {
-            throw new Error('The sent ID does not correspond to a valid user!')
-        }
-
         const validationUsers = await Users.findOne({
             where: {
                 id: cartDTO.userId
@@ -68,45 +58,60 @@ class CartService {
             throw new Error('The sent ID does not correspond to a valid product!')
         }
 
-        const validationQuantityProductCart = await this.cart.findOne({
+        const validationProduct = await Products.findOne({
             where: {
-                userId: cartDTO.userId,
-                productId: cartDTO.productId
+                id: cartDTO.productId
             }
         })
 
-        if(validationQuantityProductCart === null) {
-            try {
-                await this.cart.create(cartDTO)
-            } catch (error) {
-                throw error
-            }
+        if(validationProduct === null) {
+            throw new Error('The sent ID does not correspond to a valid user!')
         } else {
-            const idCart = validationQuantityProductCart.dataValues.id
-            const lastQuantity = validationQuantityProductCart.dataValues.quantity
-            const newQuantity = lastQuantity + cartDTO.quantity
-
-            const dataMerge = {
-                ...validationQuantityProductCart.dataValues,
-                quantity: newQuantity
-            }
-
-            try {
-                await this.cart.update(
-                    {
-                        ...dataMerge
-                    },
-                    {
-                        where: {
-                            id: idCart
-                        }
-                    }
-                )
-            } catch (error) {
-                throw error
-            }
+            var inventory = validationProduct.dataValues.inventory
         }
 
+        if(inventory > 0) {
+            const validationQuantityProductCart = await this.cart.findOne({
+                where: {
+                    userId: cartDTO.userId,
+                    productId: cartDTO.productId
+                }
+            })
+    
+            if(validationQuantityProductCart === null) {
+                try {
+                    await this.cart.create(cartDTO)
+                } catch (error) {
+                    throw error
+                }
+            } else {
+                const idCart = validationQuantityProductCart.dataValues.id
+                const lastQuantity = validationQuantityProductCart.dataValues.quantity
+                const newQuantity = lastQuantity + cartDTO.quantity
+    
+                const dataMerge = {
+                    ...validationQuantityProductCart.dataValues,
+                    quantity: newQuantity
+                }
+    
+                try {
+                    await this.cart.update(
+                        {
+                            ...dataMerge
+                        },
+                        {
+                            where: {
+                                id: idCart
+                            }
+                        }
+                    )
+                } catch (error) {
+                    throw error
+                }
+            }
+        } else {
+            throw new Error('Product not available, insufficient stock!')
+        }
     }
 
     async updateMerge(idUserCartDTO, idProductCartDTO, cartDTO) {

@@ -35,6 +35,7 @@ router.get('/list', async(req, res) => {
 router.post('/',
     body('name').not().isEmpty().withMessage('The data sent cannot be empty or null').trim().escape(),
     check('price').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number. Example (10.99)'),
+    check('inventory').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number for inventory'),
 
     async (req, res) => {
         const errors = validationResult(req)
@@ -48,7 +49,8 @@ router.post('/',
         const dataProducts = {
             name: req.body.name,
             description: req.body.description,
-            price: req.body.price
+            price: req.body.price,
+            inventory: req.body.inventory
         }
 
         try {
@@ -69,6 +71,7 @@ router.post('/',
 router.put('/:id',
     body('name').not().isEmpty().withMessage('The data sent cannot be empty or null').trim().escape(),
     check('price').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number. Example (10.99)'),
+    check('inventory').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number for inventory'),
     
     async (req, res) => {
         const errors = validationResult(req)
@@ -84,7 +87,8 @@ router.put('/:id',
         const dataProduct = {
             name: req.body.name,
             price: req.body.price,
-            description: req.body.description
+            description: req.body.description,
+            inventory: req.body.inventory
         }
 
         try {
@@ -102,6 +106,7 @@ router.put('/:id',
 router.patch('/:id', 
     body('name').not().isEmpty().withMessage('The data sent cannot be empty or null').trim().escape(),
     check('price').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number. Example (10.99)'),
+    check('inventory').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number for inventory'),
     
     async (req, res) => {
         const errors = validationResult(req)
