@@ -75,19 +75,22 @@ class CartService {
         }
     }
 
-    async updateMerge(idDTO, cartDTO) {
-        const validatecartUpdateMerge = await this.cart.findOne({
+    async updateMerge(idUserCartDTO, idProductCartDTO, cartDTO) {
+        const validateCartUpdateMerge = await this.cart.findOne({
             where: {
-                id :idDTO
+                userId: idUserCartDTO,
+                productId: idProductCartDTO
             }
         })
-
-        if (validatecartUpdateMerge === null) {
-            throw new Error('cart not found!')
+        console.log(idUserCartDTO)
+        if (validateCartUpdateMerge === null) {
+            throw new Error('Product not found!')
+        } else {
+            var idCart = validateCartUpdateMerge.dataValues.id
         }
 
         const dataMerge = {
-            ...validatecartUpdateMerge.dataValues,
+            ...validateCartUpdateMerge.dataValues,
             ...cartDTO
         }
 
@@ -98,7 +101,7 @@ class CartService {
                 },
                 {
                     where: {
-                        id: idDTO
+                        id: idCart
                     }
                 }
             )

@@ -63,8 +63,7 @@ router.post('/',
 )
 
 router.patch('/:id', 
-    body('name').not().isEmpty().withMessage('The data sent cannot be empty or null').trim().escape(),
-    check('price').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number. Example (10.99)'),
+    check('quantity').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number for quantity'),
     
     async (req, res) => {
         const errors = validationResult(req)
@@ -75,12 +74,16 @@ router.patch('/:id',
             })
         }
 
-        const idProduct = req.params.id
+        const idProductCard = req.params.id
 
-        const dataProduct = {...req.body}
+        const idUserCart = req.idUser.id
+
+        const dataProduct = {
+            quantity: req.body.quantity
+        }
 
         try {
-            await cartService.updateMerge(idProduct, dataProduct)
+            await cartService.updateMerge(idUserCart, idProductCard, dataProduct)
             res.status(204).send()
         } catch (error) {
             res.status(404).send({
