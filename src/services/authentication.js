@@ -1,3 +1,5 @@
+const TypeAccess = require("../models/entityTypeAccess")
+
 class AuthenticatedService {
     constructor(UserModel) {
         this.user = UserModel
@@ -5,6 +7,10 @@ class AuthenticatedService {
 
     async login(userDTO) {
         const validationUser = await this.user.findOne({
+            include: {
+                model: TypeAccess,
+                as: 'typeAccessData'
+            },  
             where: {
                 email: userDTO.email,
                 password: userDTO.password
