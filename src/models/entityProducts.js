@@ -8,7 +8,7 @@ const Products = configSequelize.define('EntityProducts', {
         autoIncrement: true
     },
     name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         unique: true,
         allowNull: false
     }, 

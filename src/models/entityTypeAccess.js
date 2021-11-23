@@ -8,7 +8,7 @@ const TypeAccess = configSequelize.define('EntityTypeAccess', {
         autoIncrement: true
     },
     type: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(7),
         unique: true,
         allowNull: false
     }, 

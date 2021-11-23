@@ -13,7 +13,7 @@ const Users = configSequelize.define('EntityUsers', {
         allowNull: false
     },
     cpf: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(11),
         unique: true,               // propriedade única do campo
         allowNull: false            // não pode enviar vazio
     },
@@ -22,11 +22,15 @@ const Users = configSequelize.define('EntityUsers', {
         allowNull: false
     },
     password: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: false
     },
     email: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
+        allowNull: false
+    },
+    phone: {
+        type: Sequelize.STRING(11),
         allowNull: false
     },
     typeAccessId: {

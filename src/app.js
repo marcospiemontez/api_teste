@@ -11,7 +11,7 @@ app.use('/', routers)
 
 
 // { force:true }
-configSequelize.sync().then(() => {
+configSequelize.sync({ force:true }).then(() => {
     console.log('Database Connected')
 })
 

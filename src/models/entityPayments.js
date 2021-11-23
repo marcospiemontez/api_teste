@@ -8,7 +8,7 @@ const Payments = configSequelize.define('EntityPayments', {
         autoIncrement: true
     },
     method: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         unique: true,
         allowNull: false
     }, 
