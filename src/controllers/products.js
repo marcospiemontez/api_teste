@@ -36,6 +36,7 @@ router.post('/',
     body('name').not().isEmpty().withMessage('The data sent cannot be empty or null').trim().escape(),
     check('price').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number. Example (10.99)'),
     check('inventory').not().isEmpty().isDecimal().withMessage('The data submitted must be a valid number for inventory'),
+    check('userId').not().isEmpty().isNumeric().withMessage('The data entered is not a number valid for ID!'),
 
     async (req, res) => {
         const errors = validationResult(req)
@@ -50,7 +51,8 @@ router.post('/',
             name: req.body.name,
             description: req.body.description,
             price: req.body.price,
-            inventory: req.body.inventory
+            inventory: req.body.inventory,
+            userId: req.body.userId
         }
 
         try {

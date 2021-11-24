@@ -1,3 +1,5 @@
+const Users = require("../models/entityUsers")
+
 class ProductService {
     constructor(ProductsModel) {
         this.product = ProductsModel
@@ -31,6 +33,16 @@ class ProductService {
 
         if(validationProduct !== null) {
             throw new Error('There is already a product with this name registered')
+        }
+
+        const validationUser = await Users.findOne({
+            where: {
+                id: productDTO.userId
+            }
+        })
+
+        if(validationUser === null) {
+            throw new Error('User not found!')
         }
 
         try {
