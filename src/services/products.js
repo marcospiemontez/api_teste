@@ -19,8 +19,13 @@ class ProductService {
         }
     }
 
-    async getAll() {
-        const listProducts = await this.product.findAll()
+    async getAll(idDTO) {
+        const listProducts = await this.product.findAll({
+            where: {
+                userId: idDTO
+            }
+        })
+        
         return listProducts
     }
 

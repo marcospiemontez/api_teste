@@ -27,8 +27,9 @@ router.get('/:id/details', async (req, res) => {
     }
 })
 
-router.get('/list', async(req, res) => {
-    const listProducts = await productService.getAll()
+router.get('/:id/list', async(req, res) => {
+    const idUser =  req.params.id
+    const listProducts = await productService.getAll(idUser)
     res.status(200).json(listProducts)
 })
 
