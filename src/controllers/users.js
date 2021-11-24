@@ -39,6 +39,7 @@ router.put('/:id',
     check('birthDate').not().isEmpty().isISO8601().toDate().withMessage('The date entered is not within the established pattern'),
     check('password').not().isEmpty().isLength({ min: 6 }).withMessage('The password entered must have more than 6 characters'),
     check('email').not().isEmpty().isEmail().withMessage('The e-mail entered is not a valid address'),
+    check('phone').not().isEmpty().isNumeric().withMessage('The data sent must be valid numbers'),
     
     async (req, res) => {
         const errors = validationResult(req)
@@ -77,6 +78,7 @@ router.patch('/:id',
     check('cpf').not().isEmpty().isNumeric().withMessage('The data sent must be valid numbers'),
     check('birthDate').not().isEmpty().isISO8601().toDate().withMessage('The date entered is not within the established pattern'),
     check('email').not().isEmpty().isEmail().withMessage('The e-mail entered is not a valid address'),
+    check('phone').not().isEmpty().isNumeric().withMessage('The data sent must be valid numbers'),
     
     async (req, res) => {
         const errors = validationResult(req)
