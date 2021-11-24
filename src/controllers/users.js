@@ -9,6 +9,13 @@ router.use(middleware)
 
 const userService = new UserService(Users)
 
+router.get('/whoami', async(req, res) => {
+    res.status(200).send({
+        status: 200,
+        message: 'Token is valid!'
+    })
+})
+
 router.get('/:id/details', async (req, res) => {
     const idUser = req.params.id
 
